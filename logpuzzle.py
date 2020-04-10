@@ -21,15 +21,31 @@ import re
 import sys
 import urllib
 import argparse
+if sys.version_info[0] >= 3:
+    from urllib.request import urlretrieve
+else:
+    from urllib import urlretrieve
 
+__author__ ='Sasha Lukas'
 
 def read_urls(filename):
     """Returns a list of the puzzle urls from the given log file,
     extracting the hostname from the filename itself.
     Screens out duplicate urls and returns the urls sorted into
     increasing order."""
-    # +++your code here+++
-    pass
+
+    url_list = []
+    with open(filename) as file:
+        for line in file:
+            match = re.search('/puzzle/', line)
+            if match:
+                url = re.search(r'\S+puzzle+\S+.jpg', line)
+                if url:
+                    url_list.append(url.group(0))
+    sorted_url_list = sorted(list(set(url_list)), key=lambda url: url)
+    return sorted_url_list
+    print(sorted_url_list)
+
 
 
 def download_images(img_urls, dest_dir):
@@ -41,7 +57,18 @@ def download_images(img_urls, dest_dir):
     Creates the directory if necessary.
     """
     # +++your code here+++
-    pass
+    if not os.path.exists(dest_dir):
+        os.makedirs(dest_dir)
+        print('dir made')
+    index_html = '<html><body>'
+    for index, url in enumerate(img_urls):
+        image_name = 'img' + str(index)
+        print('Retrieving {}'.format(url))
+        urlretrieve(url, dest_dir + '/' + image_name)
+        index_html += '<img src = {}></img>'.format(image_name)
+    index_html += '</body></html>'
+    with open(dest_dir + '/index.html', 'w') as write_index:
+        write_index.write(index_html)
 
 
 def create_parser():
