@@ -33,7 +33,6 @@ def read_urls(filename):
     extracting the hostname from the filename itself.
     Screens out duplicate urls and returns the urls sorted into
     increasing order."""
-<<<<<<< HEAD
 
     url_list = []
     with open(filename) as file:
@@ -46,22 +45,6 @@ def read_urls(filename):
     sorted_url_list = sorted(list(set(url_list)), key=lambda url: url)
     return sorted_url_list
     print(sorted_url_list)
-=======
-    # +++your code here+++
-    with open(filename, 'r') as file:
-        # file.close()
-
-        url_list = []
-        for line in file:
-            match = re.search('puzzle', line)
-            if match:
-                url_result = re.search(r'\S+puzzle|S+.jpg', line)
-                if url_result:
-                    url_list.append(url_result.group())
-        sorted_url = sorted(list(set(url_list)), key=lambda url: url[-8:-4])
-        return sorted_url
-
->>>>>>> eb17f67c420cb6e6de91036ab97acaa6bd7e12ee
 
 
 
@@ -75,7 +58,6 @@ def download_images(img_urls, dest_dir):
     """
     # +++your code here+++
     if not os.path.exists(dest_dir):
-<<<<<<< HEAD
         os.makedirs(dest_dir)
         print('dir made')
     index_html = '<html><body>'
@@ -87,19 +69,6 @@ def download_images(img_urls, dest_dir):
     index_html += '</body></html>'
     with open(dest_dir + '/index.html', 'w') as write_index:
         write_index.write(index_html)
-=======
-        os.mkdir(dest_dir)
-
-    f = open(os.path.join(dest_dir, 'index.html'), 'w')
-
-    for i, url in enumerate(img_urls):
-        print ('GET', url)
-        img = 'img' + str(i)
-        urllib.urlretrieve(url, os.path.join(dest_dir, img))
-        f.write('<img src="' + img + '" />')
-
-    f.close()
->>>>>>> eb17f67c420cb6e6de91036ab97acaa6bd7e12ee
 
 
 def create_parser():
